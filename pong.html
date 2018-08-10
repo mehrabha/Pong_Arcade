@@ -1,0 +1,44 @@
+<html>
+
+<canvas id = "gameCanvas" width = "800"
+height = "600"></canvas>
+
+<script>
+var canvas;
+var canvasContext;
+var ball_x = 300;
+var ball_y = 275;
+
+window.onload = function()
+{
+	canvas = document.getElementById('gameCanvas');
+	canvasContext = canvas.getContext('2d');
+	
+	var framesPerSecond = 30;
+	
+	setInterval(function()
+	{
+		moveObjects();
+		drawFrame();
+	}, 1000 / framesPerSecond);
+}
+	
+function moveObjects()
+{
+	ball_x = ball_x + 8;
+}
+
+function drawFrame()
+{
+
+	canvasContext.fillStyle = 'black';
+	canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+	canvasContext.fillStyle = 'yellow';
+	canvasContext.fillRect(0, 250, 10, 100);
+	canvasContext.fillStyle = 'red';
+	canvasContext.fillRect(ball_x, ball_y, 15, 15);
+}
+	
+</script>
+
+</html>
