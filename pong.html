@@ -4,39 +4,92 @@
 height = "600"></canvas>
 
 <script>
-var canvas;
-var canvasContext;
+var canvas = document.getElementById('gameCanvas');
+var canvasContext = canvas.getContext('2d');
+
 var ball_x = 10;
-var ballSpeed_x = 8;
+var ballStartSpeed_x = 10;
+var ballSpeed_x = ballStartSpeed_x;
 var ball_y = 275;
-var ballSpeed_y = 10;
+var ballSpeed_y = Math.round(Math.random() * (9 - 3)) + 1;
+
+var paddle1_y = 250;
+var paddleSpeed_y = 10;
+const paddleHeight = 150;
+const paddleWidth = 10;
+
 
 window.onload = function()
-{
-	canvas = document.getElementById('gameCanvas');
-	canvasContext = canvas.getContext('2d');
-	
+{	
 	var framesPerSecond = 30;
 	
 	setInterval(function()
 	{
-		moveObjects();
+		moveBall();
 		drawFrame();
 	}, 1000 / framesPerSecond);
 }
-	
-function moveObjects()
+
+// Called on keydown event
+function movePaddle(e)
 {
-	// Change the ball x coordinate
+	// Arrow up = 38
+	// Arrow down = 40
+	
+	if(e.keyCode == 38)
+	{
+		if(paddle1_y >= paddleSpeed_y) // Set a top boundary
+		{
+			paddle1_y -= paddleSpeed_y; // Move paddle upwards
+		}
+	}
+	else if (e.keyCode == 40)
+	{
+		if(paddle1_y <= (canvas.height - paddleHeight - paddleSpeed_y)) // Set a bottom boundary
+		{
+			paddle1_y += paddleSpeed_y; // Move paddle downwards
+		}
+	}
+}
+document.onkeydown = movePaddle;
+	
+// Launch the ball again with a random speed	
+function ballReset()
+{
+	ball_x = canvas.width / 2;
+	ball_y = canvas.height / 2;
+	
+	// Launch the ball back at the previous winner
+	ballSpeed_x = -ballSpeed_x;
+	
+	ballSpeed_y = Math.round(Math.random() * (9 - 3)) + 1;
+	
+	if(ballSpeed_y % 2 == 0){
+		ballSpeed_y = -ballSpeed_y;
+	}
+	
+}
+
+function moveBall()
+{
+	// Change the ball x coordinate		
 	ball_x = ball_x + ballSpeed_x;
 	
-	
-	// bounce ball back into the frame
-	if(ball_x > canvas.width)
+	if(ball_x < 0)
 	{
-		ballSpeed_x = -ballSpeed_x;
+		// If the ball is above or below the paddle
+		if(ball_y < paddle1_y || ball_y > paddle1_y + paddleHeight){
+			//reset
+			ballSpeed_x = -ballStartSpeed_x;
+			ballReset();
+		}
+		else
+		{
+			ballSpeed_x = -ballSpeed_x * 1.2;
+		}
+		
 	}
-	else if (ball_x < 0)
+	else if (ball_x > canvas.width)
 	{
 		ballSpeed_x = -ballSpeed_x;
 	}
@@ -63,6 +116,9 @@ function drawFrame()
 	
 	// draw a ball at x, y coordinate
 	colorCircle(ball_x, ball_y, 15, 'red');
+	
+	// draw player paddle
+	colorRectangle(0, paddle1_y, paddleWidth, paddleHeight, 'yellow');
 	
 }
 	
