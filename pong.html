@@ -11,14 +11,14 @@ var ball_x = 10;
 var ballStartSpeed_x = 10;
 var ballSpeed_x = ballStartSpeed_x;
 var ball_y = 275;
-var ballSpeed_y = Math.round(Math.random() * (12 - 8)) + 4;
+var ballSpeed_y = Math.round(Math.random() * (8 - 4)) + 4;
 var ballSpeedIncrement = 1.02;
 
 var paddle1_y = 250;
 var paddle2_y = 250;
 var paddleSpeed_y = 10;
 var	paddle2Speed_y = 5;
-const paddleHeight = 150;
+const paddleHeight = 120;
 const paddleWidth = 10;
 
 var player1_score = 0;
@@ -93,7 +93,7 @@ function ballReset()
 	// Launch the ball back at the previous winner
 	ballSpeed_x = -ballSpeed_x;
 	
-	ballSpeed_y = Math.round(Math.random() * (12 - 8)) + 4;
+	ballSpeed_y = Math.round(Math.random() * (8 - 4)) + 4;
 	
 	if(ballSpeed_y % 2 == 0){
 		ballSpeed_y = -ballSpeed_y;
@@ -116,10 +116,26 @@ function moveBall()
 			ballReset();
 		}
 		else
-		{
+		{	
+			// Slightly increase ball x speed on hit and reflect
 			ballSpeed_x = -ballSpeed_x * ballSpeedIncrement;
+			
+			// Invert ball y speed depending on the hit
+			if(ball_y - paddle1_y > 60)
+			{
+				if(ballSpeed_y < 0)
+				{
+					ballSpeed_y = -ballSpeed_y;
+				}
+			}
+			else
+			{
+				if(ballSpeed_y > 0)
+				{
+					ballSpeed_y = -ballSpeed_y;
+				}
+			}
 		}
-		
 	}
 	else if (ball_x > canvas.width)
 	{
@@ -133,6 +149,21 @@ function moveBall()
 		else
 		{
 			ballSpeed_x = -ballSpeed_x * ballSpeedIncrement;
+			
+			if(ball_y - paddle1_y > 60)
+			{
+				if(ballSpeed_y < 0)
+				{
+					ballSpeed_y = -ballSpeed_y;
+				}
+			}
+			else
+			{
+				if(ballSpeed_y > 0)
+				{
+					ballSpeed_y = -ballSpeed_y;
+				}
+			}
 		}
 	}
 	
