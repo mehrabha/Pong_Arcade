@@ -21,6 +21,9 @@ var	paddle2Speed_y = 5;
 const paddleHeight = 150;
 const paddleWidth = 10;
 
+var player1_score = 0;
+var player2_score = 0;
+
 
 window.onload = function()
 {	
@@ -109,6 +112,7 @@ function moveBall()
 		if(ball_y < paddle1_y || ball_y > paddle1_y + paddleHeight){
 			//reset
 			ballSpeed_x = -ballStartSpeed_x;
+			player2_score++;
 			ballReset();
 		}
 		else
@@ -123,6 +127,7 @@ function moveBall()
 		if(ball_y < paddle2_y || ball_y > paddle2_y + paddleHeight){
 			//reset
 			ballSpeed_x = ballStartSpeed_x;
+			player1_score++;
 			ballReset();
 		}
 		else
@@ -160,7 +165,8 @@ function drawFrame()
 	// draw player1 paddle
 	colorRectangle(790, paddle2_y, paddleWidth, paddleHeight, 'yellow');
 	
-	//canvasContext.fillText("Score: ", 100 ,100);
+	canvasContext.fillText(player1_score, 100 ,100);
+	canvasContext.fillText(player2_score, canvas.width - 100 ,100);
 	
 }
 	
