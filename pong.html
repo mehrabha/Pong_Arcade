@@ -6,7 +6,8 @@ height = "600"></canvas>
 <script>
 var canvas;
 var canvasContext;
-var ball_x = 300;
+var ball_x = 10;
+var ballSpeed_x = 8;
 var ball_y = 275;
 
 window.onload = function()
@@ -25,20 +26,35 @@ window.onload = function()
 	
 function moveObjects()
 {
-	ball_x = ball_x + 8;
+	// Change the ball x coordinate
+	ball_x = ball_x + ballSpeed_x;
+	
+	
+	// bounce ball back into the frame
+	if(ball_x > canvas.width)
+	{
+		ballSpeed_x = -ballSpeed_x;
+	}
+	else if (ball_x < 0)
+	{
+		ballSpeed_x = -ballSpeed_x;
+	}
 }
 
 function drawFrame()
 {
-
-	canvasContext.fillStyle = 'black';
-	canvasContext.fillRect(0, 0, canvas.width, canvas.height);
-	canvasContext.fillStyle = 'yellow';
-	canvasContext.fillRect(0, 250, 10, 100);
-	canvasContext.fillStyle = 'red';
-	canvasContext.fillRect(ball_x, ball_y, 15, 15);
+	// draw black rectangle of size 800 x 600 
+	colorRect(0, 0, 800, 600, 'black');
+	
+	// draw a ball at x, y coordinate
+	colorRect(ball_x, ball_y, 15, 15, 'red');
 }
 	
+function colorRect(x, y, width, height, color)
+{
+	canvasContext.fillStyle = color;
+	canvasContext.fillRect(x, y, width, height);
+}
 </script>
 
 </html>
