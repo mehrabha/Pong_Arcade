@@ -9,6 +9,7 @@ var canvasContext;
 var ball_x = 10;
 var ballSpeed_x = 8;
 var ball_y = 275;
+var ballSpeed_y = 10;
 
 window.onload = function()
 {
@@ -39,21 +40,44 @@ function moveObjects()
 	{
 		ballSpeed_x = -ballSpeed_x;
 	}
+	
+	// Change the ball y coordinate
+	ball_y = ball_y + ballSpeed_y;
+	
+	
+	// bounce ball back into the frame
+	if(ball_y > canvas.height)
+	{
+		ballSpeed_y = -ballSpeed_y;
+	}
+	else if (ball_y < 0)
+	{
+		ballSpeed_y = -ballSpeed_y;
+	}
 }
 
 function drawFrame()
 {
 	// draw black rectangle of size 800 x 600 
-	colorRect(0, 0, 800, 600, 'black');
+	colorRectangle(0, 0, 800, 600, 'black');
 	
 	// draw a ball at x, y coordinate
-	colorRect(ball_x, ball_y, 15, 15, 'red');
+	colorCircle(ball_x, ball_y, 15, 'red');
+	
 }
 	
-function colorRect(x, y, width, height, color)
+function colorRectangle(x, y, width, height, color)
 {
 	canvasContext.fillStyle = color;
 	canvasContext.fillRect(x, y, width, height);
+}
+
+function colorCircle(x, y, radius, color)
+{
+	canvasContext.fillStyle = color;
+	canvasContext.beginPath();
+	canvasContext.arc(x, y, radius, 0, Math.PI*2, true);
+	canvasContext.fill();
 }
 </script>
 
